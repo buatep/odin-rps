@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock - Paper - Scissor</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
   </head>
   <body>
     <header>
@@ -15,19 +15,15 @@
     <main class="arena">
       <h2>Choose your method to attack the opponent</h2>
       <div class="rps">
-        <button class="btn" id="rock">
-          <img src="assets\rock.png" alt="rock" />
-        </button>
-        <button class="btn" id="paper">
-          <img src="assets\paper.png" alt="rock" />
-        </button>
-        <button class="btn" id="scissor">
-          <img src="assets\scissor.png" alt="rock" />
-        </button>
+        <button class="choice" data-selection="rock">✊</button>
+        <button class="choice" data-selection="paper">✋</button>
+        <button class="choice" data-selection="scissor">✌</button>
       </div>
-      <h2>Score</h2>
-      <h3>Yours<br id>0</nr></h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <h3>Opponent<br>0</h3>
+      <div class="result" data-final-column>
+        <h2>Score</h2>
+        <h3>Yours  <span data-your-score>0</span></h3>
+        <h3>Opponent  <span data-opponent-score>0</span></h3>
+      </div>
     </main>
     <footer>
       <p>

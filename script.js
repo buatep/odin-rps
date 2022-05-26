@@ -1,44 +1,63 @@
-let yourScore = 0;
-let opponentScore = 0;
-let winner = "";
+const selectionButtons = document.querySelectorAll('[data-selection]');
+const yourScoreSpan = document.querySelector('[data-your-score]');
+const finalColumn = document.querySelector('[data-final-column]');
+const computerScoreSpan = document.querySelector('[data-opponent-score]');
 
-const rockBtn = document.getElementById("rock");
-const paperBtn = document.getElementById("paper");
-const scissorsBtn = document.getElementById("scissor");
+const TURN = [
+  {
+    name: 'rock',
+    emoji: '✊',
+    beats: 'scissor'
+  },
+  {
+    name: 'paper',
+    emoji: '✋',
+    beats: 'rock'
+  },
+  {
+    name: 'scissor',
+    emoji: '✌',
+    beats: 'paper'
+  },
+];
 
-function playRound(playerSelection, computerSelection) {
-  if (playerSelection === computerSelection) {
-    winner = "tie";
-  }
-  if (
-    (playerSelection === "ROCK" && computerSelection === "SCISSOR") ||
-    (playerSelection === "SCISSOR" && computerSelection === "PAPER") ||
-    (playerSelection === "PAPER" && computerSelection === "ROCK")
-  ) {
-    yourScore++;
-    winner = "player";
-  }
-  if (
-    (computerSelection === "ROCK" && playerSelection === "SCISSOR") ||
-    (computerSelection === "SCISSOR" && playerSelection === "PAPER") ||
-    (computerSelection === "PAPER" && playerSelection === "ROCK")
-  ) {
-    opponentScore++;
-    roundWinner = "computer";
-  }
-  updateScoreMessage(winner, yourScore, opponentScore);
+selectionButtons.forEach((selectionButton) => {
+  selectionButton.addEventListener('click', e => {
+    const theTurn = selectionButton.dataset.selection;
+    const selection = TURN.find(choice => choice.name === theTurn);
+    makeChoice(selection);
+  });
+});
+
+function isWinner(selection, opponentSelection) {
+  return selection.beats === opponentSelection.name;
+}
+
+function makeChoice(selection) {
+  const computerSelection = opponentTurn();
+  const yourWinner = isWinner(selection, computerSelection);
+  const computerWinner = isWinner(computerSelection, selection);
+
+  turnResult(computerSelection, computerWinner);
+  turnResult(selection, yourWinner);
+
+  if (yourWinner) incrementScore(yourScoreSpan);
+  if (computerWinner) incrementScore(computerScoreSpan);
+}
+
+function incrementScore(scoreSpan) {
+  scoreSpan.innerText = parseInt(scoreSpan.innerText) + 1;
+}
+
+function turnResult(eachTurn, winner) {
+  const div = document.createElement('div');
+  div.innerText = eachTurn.emoji;
+  div.classList.add('turn-result');
+  if (winner) div.classList.add('winner');
+  finalColumn.after(div);
 }
 
 function opponentTurn() {
-  let random = Math.floor(Math.random() * 5);
-  switch (random) {
-    case 0:
-      return "ROCK";
-    case 1:
-      return "PAPER";
-    case 2:
-      return "SCISSOR";
-  }
+  const fandom = Math.floor(Math.random() * TURN.length);
+  return TURN[fandom];
 }
-
-function
